@@ -22,8 +22,8 @@ class ExampleTest extends TestCase
     public function testCursorPaginateFails()
     {
         $this->seed();
-        $users = User::orderBy('created_at', 'DESC')->cursorPaginate(5);
-        $userData = UserData::collection($users);
+        $users = User::orderBy('created_at', 'DESC');
+        $userData = UserData::collection($users->cursorPaginate(5));
 
         // ErrorException : Undefined property: App\Data\UserData::$created_at
         $array = $userData->toArray();
