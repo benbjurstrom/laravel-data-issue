@@ -2,20 +2,31 @@
 
 namespace Tests\Feature;
 
-// use Illuminate\Foundation\Testing\RefreshDatabase;
+use App\Data\UserData;
+use App\Models\User;
 use Tests\TestCase;
 
 class ExampleTest extends TestCase
 {
-    /**
-     * A basic test example.
-     *
-     * @return void
-     */
-    public function test_the_application_returns_a_successful_response()
+    public function testPaginatePasses()
     {
-        $response = $this->get('/');
+        $this->seed();
+        $users = User::orderBy('created_at', 'DESC')->paginate(5);
+        $userData = UserData::collection($users);
 
-        $response->assertStatus(200);
+        // No error
+        $array = $userData->toArray();
+        $this->assertIsArray($array);
+    }
+
+    public function testCursorPaginateFails()
+    {
+        $this->seed();
+        $users = User::orderBy('created_at', 'DESC')->cursorPaginate(5);
+        $userData = UserData::collection($users);
+
+        // ErrorException : Undefined property: App\Data\UserData::$created_at
+        $array = $userData->toArray();
+        $this->assertIsArray($array);
     }
 }
