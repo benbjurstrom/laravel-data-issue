@@ -1,0 +1,9 @@
+includes:
+    - ./vendor/nunomaduro/larastan/extension.neon
+    - ./vendor/tpetry/laravel-postgresql-enhanced/phpstan-extension.neon
+
+parameters:
+    level: 8
+
+    paths:
+        - app
